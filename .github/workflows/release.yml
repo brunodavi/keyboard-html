@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle (cache)
+        uses: gradle/gradle-build-action@v2
+
+      - name: Restore Android SDK cache
+        uses: actions/cache/restore@v3
+        with:
+          path: build/android-sdk-root
+          key: android-sdk-${{ hashFiles('gradle.properties') }}
+
+      - name: Tests
+        run: ./gradlew test
+
+      - name: Build APKs
+        run: ./gradlew assembleRelease assembleDebug
+
+      - name: Save Android SDK cache
+        uses: actions/cache/save@v3
+        with:
+          path: build/android-sdk-root
+          key: android-sdk-${{ hashFiles('gradle.properties') }}
+
+      - name: Collect artifacts with checksums
+        id: artifacts
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk "dist/keyboard-html-${TAG}-debug.apk"
+          cp app/build/outputs/apk/release/app-release-unsigned.apk "dist/keyboard-html-${TAG}-release-unsigned.apk"
+          cd dist
+          sha256sum *.apk > SHA256SUMS.txt
+
+      - name: Extract changelog section
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          awk -v ver="$VERSION" '
+            BEGIN { hdr = "## [" ver "]" }
+            index($0, hdr) == 1 { flag=1; next }
+            flag && index($0, "## [") == 1 { exit }
+            flag { print }
+          ' CHANGELOG.md > changelog_section.md
+          echo "## Checksums" >> changelog_section.md
+          echo '```' >> changelog_section.md
+          cat dist/SHA256SUMS.txt >> changelog_section.md
+          echo '```' >> changelog_section.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: changelog_section.md
+          files: dist/*
