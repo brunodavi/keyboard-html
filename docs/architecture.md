@@ -8,6 +8,7 @@ keyboard-html is an experimental Android on-screen keyboard app. Objective: full
 - Keyboard layouts are user-importable **.zip packages**, extracted into the app's **internal storage** — never use broad storage permissions; use the system file manager via intent (SAF) for picking the zip.
 - Default bundled keyboards (QWERTY etc.) ship as HTML assets inside the APK.
 - The app must **work fully offline** — no network dependencies at runtime.
+- The app's configuration screen is a native XML layout; the keyboard view stays an HTML WebView under an IME service (`docs/smoke-tests.md` covers the on-device checks).
 
 ## Why this shape
 

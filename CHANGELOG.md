@@ -6,8 +6,10 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ### Added
 
+- MVP slices: IME service rendering the bundled HTML QWERTY keyboard via a WebView with a JS bridge (letters/space/backspace/enter), configuration screen (XML) with enable/select shortcuts, a test text field, `.zip` layout import through the SAF file picker (internal storage only), and choosing among installed layouts (persisted selection).
 - `VersionConsistencyTest`: APP_VERSION must be semver X.Y.Z, APP_VERSION_CODE a positive integer, and CHANGELOG.md must track the project version.
 - Release pipeline guards: tag must match `APP_VERSION`, CHANGELOG section must exist, APK `versionName` (debug and release) must equal the project version.
+- Manual smoke-test checklist in `docs/smoke-tests.md`.
 
 ### Changed
 
