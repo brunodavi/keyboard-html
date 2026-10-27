@@ -14,6 +14,10 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ### Changed
 
+- Release builds now run R8 (code + resource shrinking): the release APK
+  compresses the unneeded Gson classes away instead of dexing the whole
+  library; explicit ProGuard keeps protect the `@JavascriptInterface`
+  bridge from being stripped (spec-tested in `ReleaseBuildShrinksCodeTest`).
 - `manifest.json` is now parsed with Gson (2.15.0) instead of the hand-written
   mini-parser: standard JSON semantics apply (escapes such as `\t`/`\u00e9`
   decode inside the display name) and future fields become straightforward.
