@@ -3,6 +3,9 @@
     <string name="setup_intro">Set this as your keyboard in two steps: enable it, then select it.</string>
     <string name="action_enable">Enable keyboard</string>
     <string name="action_select">Select keyboard</string>
+    <string name="action_import">Import keyboard (.zip)</string>
+    <string name="imported_toast">Imported layout “%1$s”</string>
+    <string name="import_failed_toast">Import failed: %1$s</string>
     <string name="status_checking">Checking keyboard status…</string>
     <string name="status_disabled">Status: not enabled — tap “Enable keyboard”.</string>
     <string name="status_enabled">Status: enabled — tap “Select keyboard” to make it current.</string>
