@@ -165,9 +165,9 @@ public class DefaultKeyboardAssetTest {
     @Test
     public void theKeyboardNeverScrolls() throws IOException {
         String html = asset();
-        assertTrue("page must fill the view and hide overflow",
-                html.matches("(?s).*html, body \\{[^}]*height: 100%;[^}]*overflow: hidden;.*"));
-        assertTrue("keyboard container must not overflow either",
-                html.matches("(?s).*#kb \\{[^}]*height: 100%;[^}]*box-sizing: border-box;[^}]*overflow: hidden;.*"));
+        assertTrue("page must lock overflow (no scrollbars)",
+                html.matches("(?s).*html, body \\{[^}]*overflow: hidden;[^}]*overscroll-behavior: none;.*"));
+        assertFalse("height 100% breaks the web view intrinsic sizing (invisible keyboard)",
+                html.contains("height: 100%"));
     }
 }

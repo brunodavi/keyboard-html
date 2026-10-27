@@ -6,8 +6,8 @@
   html, body {
     margin: 0; padding: 0;
     background: #1e1f20;
-    height: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
     font-family: sans-serif;
     -webkit-user-select: none;
     user-select: none;
@@ -16,7 +16,7 @@
   }
   #kb {
     display: flex; flex-direction: column; gap: 6px;
-    height: 100%; box-sizing: border-box; overflow: hidden;
+    overflow: hidden;
     padding: 6px 4px 8px;
   }
   .sheet { display: none; flex-direction: column; gap: 6px; }
