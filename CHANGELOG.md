@@ -4,6 +4,8 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-27
+
 ### Added
 
 - Built-in keyboard replaced with a complete dark Gboard-style QWERTY:
@@ -11,8 +13,8 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
   inverted marks), one-shot shift, page toggle (`2/2`/`1/2`), and the
   `!#1`/`ABC` sheet switch; special keys are UI-only and never leak text
   through the bridge (spec-tested in `DefaultKeyboardAssetTest`).
-- Letters row is a shared 20-column CSS grid (on-device tested variant):
-  uniform key widths, shift/backspace span three columns each.
+- Letters row is a 20-column CSS grid, tuned on device: uniform key
+  widths, shift/backspace span three columns each.
 
 ### Fixed
 
@@ -20,16 +22,21 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
   the layout reload used startService, which starts/stickily restarts the
   InputMethodService outside the input-method lifecycle; replaced with an
   in-app broadcast received by the service.
+- The keyboard page no longer scrolls/bounces occasionally (overflow
+  locked in CSS and WebView overscroll disabled).
 
 ### Changed
 
 - Release builds now run R8 (code + resource shrinking): the release APK
   compresses the unneeded Gson classes away instead of dexing the whole
   library; explicit ProGuard keeps protect the `@JavascriptInterface`
-  bridge from being stripped (spec-tested in `ReleaseBuildShrinksCodeTest`).
+  bridge from being stripped (release drops from ~169KB to ~34KB).
 - `manifest.json` is now parsed with Gson (2.15.0) instead of the hand-written
   mini-parser: standard JSON semantics apply (escapes such as `\t`/`\u00e9`
   decode inside the display name) and future fields become straightforward.
+- CI/release workflows on current action versions (checkout v7, setup-java
+  v6, setup-gradle v6, cache v6, gh-release v3), clearing Node 20 and cache
+  deprecation warnings.
 
 ## [0.1.1] - 2026-10-27
 
