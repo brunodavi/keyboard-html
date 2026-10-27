@@ -4,6 +4,8 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-27
+
 ### Fixed
 
 - A keyboard that is already active picks up a layout change at once
