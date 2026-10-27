@@ -4,27 +4,20 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
-### Fixed
-
-- Layout import no longer overwrites all previously imported keyboards: the picked
-  file's original name defines each layout folder ("import" fallback only when the
-  picker reports no name).
-- Keyboard display label shows only the manifest `name` (no technical id suffix).
+## [0.1.0] - 2026-10-27
 
 ### Added
 
-- MVP slices: IME service rendering the bundled HTML QWERTY keyboard via a WebView with a JS bridge (letters/space/backspace/enter), configuration screen (XML) with enable/select shortcuts, a test text field, `.zip` layout import through the SAF file picker (internal storage only), and choosing among installed layouts (persisted selection).
-- Sample layout zips (`red-test.zip`, `mint-test.zip`) generated next to the debug APK for on-device smoke testing.
-- `VersionConsistencyTest`: APP_VERSION must be semver X.Y.Z, APP_VERSION_CODE a positive integer, and CHANGELOG.md must track the project version.
-- Release pipeline guards: tag must match `APP_VERSION`, CHANGELOG section must exist, APK `versionName` (debug and release) must equal the project version.
+- MVP: IME service rendering the bundled HTML QWERTY keyboard via a WebView with a JS bridge (letters/space/backspace/enter), configuration screen (XML) with enable/select shortcuts, a test text field, `.zip` layout import through the SAF file picker (internal storage only), and choosing among installed layouts (persisted selection, plus a built-in default entry).
+- Optional `manifest.json` in keyboard packages declares the display name (fallback: zip file name).
+- Sample layout zips (`red-test.zip`, `mint-test.zip`) generated next to the debug APK for on-device smoke testing (`docs/smoke-tests.md`).
+- CI on `dev` (build, lint, tests) and tag-triggered release pipeline with Gradle/SDK caches, APK artifacts and SHA256 checksums; version guards keep tag, `APP_VERSION` and Changelog in sync.
 - Manual smoke-test checklist in `docs/smoke-tests.md`.
 
-### Changed
+### Fixed
 
-- `APP_VERSION` bumped from `1.0` to `1.0.0` (semver, tag-compatible).
-
-## [1.0.0] - Unreleased
-
-### Added
-
-- Initial app skeleton: WebView-based app shell, Gradle/Termux build setup, unit test foundation, CI and tag-triggered release pipeline.
+- Layout import keeps its own folder per picked file name; first MVP testing
+  showed every import overwriting a single "import" folder.
+- Keyboard display label shows only the manifest `name` (no technical id suffix).
+- Backspace clears the current selection in one step instead of deleting a
+  single character behind the selection.
