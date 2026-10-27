@@ -108,11 +108,35 @@ public class MainActivity extends Activity {
         }
     }
 
-    /** Copies the picked document into cache, then extracts it into layouts/. */
+    /**
+     * Copies the picked document into cache, then extracts it into layouts/.
+     * The original picked file name comes along, so each import gets its
+     * own layout folder (re-importing the same file name replaces it).
+     */
     private String importLayout(Uri source) throws IOException {
-        File cache = new File(getCacheDir(), "import.zip");
+        File cache = new File(getCacheDir(), displayName(source));
         copyTo(source, cache);
         return ZipLayoutExtractor.extract(cache, layoutsRoot()).layoutId();
+    }
+
+    /** Original picked file name via SAF metadata; falls back to "import". */
+    private String displayName(Uri source) {
+        android.database.Cursor cursor = null;
+        try {
+            cursor = getContentResolver().query(
+                    source, new String[]{android.provider.OpenableColumns.DISPLAY_NAME},
+                    null, null, null);
+            if (cursor != null && cursor.moveToFirst() && cursor.getString(0) != null) {
+                return cursor.getString(0);
+            }
+        } catch (RuntimeException queryFailed) {
+            // fall through to the default name
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return "import";
     }
 
     private void chooseLayout() {
@@ -146,10 +170,9 @@ public class MainActivity extends Activity {
                 .show();
     }
 
-    /** Manifest name when declared, with the folder id as a small suffix. */
+    /** Manifest display name when declared, otherwise the folder id. */
     private static String displayLabel(LayoutRepository repository, String layoutId) {
-        String name = repository.layoutName(layoutId);
-        return name.equals(layoutId) ? name : name + " (" + layoutId + ")";
+        return repository.layoutName(layoutId);
     }
 
     private LayoutRepository layoutsRepository() {

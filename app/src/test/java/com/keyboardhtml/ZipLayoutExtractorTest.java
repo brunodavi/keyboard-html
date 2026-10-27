@@ -31,6 +31,17 @@ public class ZipLayoutExtractorTest {
     }
 
     @Test
+    public void layoutIdFromSpacedFileNameIsSanitized() throws IOException {
+        File zip = new ZipFileBuilder(tmp.newFile("My Keeb v1.zip"))
+                .add("index.html", "<html>QWERTY</html>").close().file();
+
+        ZipLayoutExtractor.Result result = ZipLayoutExtractor.extract(zip, target);
+
+        assertEquals("My_Keeb_v1", result.layoutId());
+        assertEquals("<html>QWERTY</html>", read(new File(target, "My_Keeb_v1/index.html")));
+    }
+
+    @Test
     public void extractsIndexHtmlFromFlatZipIntoLayoutFolder() throws IOException {
         File zip = new ZipFileBuilder(new File(tmp.getRoot(), "myzip.zip"))
                 .add("index.html", "<html>QWERTY</html>")

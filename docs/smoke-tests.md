@@ -31,6 +31,7 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 3. Toast: "Imported and selected `Red Test`" (mentioning the manifest name).
 4. The keyboard (on any field) now renders the red layout.
 5. Import `mint-test.zip` the same way; the keyboard switches to it.
+6. Import both again? Each file name owns ONE layout folder: importing different zips adds layouts to the chooser; importing the same zip replaces only its own layout. The chooser and toasts show the manifest `name` (no id suffix), falling back to the zip file name.
 
 ## S4 — choose among installed layouts
 

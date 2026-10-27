@@ -4,6 +4,13 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+### Fixed
+
+- Layout import no longer overwrites all previously imported keyboards: the picked
+  file's original name defines each layout folder ("import" fallback only when the
+  picker reports no name).
+- Keyboard display label shows only the manifest `name` (no technical id suffix).
+
 ### Added
 
 - MVP slices: IME service rendering the bundled HTML QWERTY keyboard via a WebView with a JS bridge (letters/space/backspace/enter), configuration screen (XML) with enable/select shortcuts, a test text field, `.zip` layout import through the SAF file picker (internal storage only), and choosing among installed layouts (persisted selection).
