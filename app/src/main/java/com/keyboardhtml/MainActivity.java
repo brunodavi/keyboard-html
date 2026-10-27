@@ -99,6 +99,7 @@ public class MainActivity extends Activity {
         try {
             String imported = importLayout(data.getData());
             layoutsRepository().currentLayoutId(imported);
+            refreshKeyboard();
             refreshStatus();
             Toast.makeText(this, getString(R.string.imported_toast,
                     displayLabel(layoutsRepository(), imported)), Toast.LENGTH_LONG).show();
@@ -160,6 +161,7 @@ public class MainActivity extends Activity {
                                     getString(R.string.selected_toast, displayLabel(repository, layouts.get(which - 1))),
                                     Toast.LENGTH_SHORT).show();
                         }
+                        refreshKeyboard();
                         refreshStatus();
                     } catch (IllegalArgumentException e) {
                         Toast.makeText(this,
@@ -168,6 +170,12 @@ public class MainActivity extends Activity {
                     }
                 })
                 .show();
+    }
+
+    /** Nudges the live keyboard service so an active web view reloads the selection. */
+    private void refreshKeyboard() {
+        startService(new Intent(this, KeyboardService.class)
+                .setAction(KeyboardService.ACTION_RELOAD_LAYOUT));
     }
 
     /** Manifest display name when declared, otherwise the folder id. */

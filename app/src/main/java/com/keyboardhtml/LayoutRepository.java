@@ -74,6 +74,19 @@ final class LayoutRepository {
     }
 
     /**
+     * File URI of the selected layout's index.html, or null when nothing is
+     * selected (or the layout is gone) — the caller falls back to the asset.
+     */
+    String currentLayoutUri() {
+        String id = currentLayoutId();
+        if (id == null) {
+            return null;
+        }
+        File index = new File(root, id + "/index.html");
+        return index.isFile() ? index.toURI().toString() : null;
+    }
+
+    /**
      * Human display name of a layout: manifest.json "name" when declared
      * (and valid), otherwise the layout folder id itself.
      */

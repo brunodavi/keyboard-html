@@ -4,6 +4,12 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+### Fixed
+
+- A keyboard that is already active picks up a layout change at once
+  (chooser or re-import): the service reloads the web view instead of
+  keeping the previously loaded HTML until it is closed and reopened.
+
 ## [0.1.0] - 2026-10-27
 
 ### Added

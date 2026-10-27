@@ -139,6 +139,39 @@ public class LayoutRepositoryTest {
         }
     }
 
+    @Test
+    public void currentLayoutUriPointsToTheSelectedLayoutIndex() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+        repository.currentLayoutId("alpha");
+
+        assertEquals(new File(root, "alpha/index.html").toURI().toString(),
+                repository.currentLayoutUri());
+    }
+
+    @Test
+    public void currentLayoutUriIsNullWithoutASelection() throws IOException {
+        assertNull(repository.currentLayoutUri());
+    }
+
+    @Test
+    public void currentLayoutUriIsNullWhenTheSelectedIndexIsGone() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+        repository.currentLayoutId("alpha");
+        deleteRecursively(new File(root, "alpha"));
+
+        assertNull(repository.currentLayoutUri());
+    }
+
+    private static void deleteRecursively(File file) {
+        File[] children = file.listFiles();
+        if (children != null) {
+            for (File child : children) {
+                deleteRecursively(child);
+            }
+        }
+        file.delete();
+    }
+
     private void write(File folder, String relative, String content) throws IOException {
         File target = new File(folder, relative);
         target.getParentFile().mkdirs();

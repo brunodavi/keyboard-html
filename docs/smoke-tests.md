@@ -37,9 +37,11 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 
 1. Import a second layout zip.
 2. Tap **Choose layout** → dialog lists both layouts alphabetically.
-3. Pick one → toast "Selected layout …", next keyboard use shows it.
+3. Pick one → toast "Selected layout …" and an already-open keyboard reloads
+   the chosen HTML immediately (no close/reopen needed).
 4. **Choose layout** with no imported layouts → toast "No imported layouts yet".
-5. Re-importing the same zip name replaces the previous version.
+5. Re-importing the same zip name replaces the previous version; a live
+   keyboard reloads the new page content too (not only the selection).
 
 ### Building a test layout zip
 

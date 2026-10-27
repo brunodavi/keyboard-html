@@ -2,6 +2,7 @@ package com.keyboardhtml;
 
 import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,6 +24,10 @@ public class KeyboardService extends InputMethodService {
 
     private WebView keyboardView;
     private String loadedLayoutUrl;
+
+    /** Sent after a layout change so an active keyboard picks it up at once. */
+    public static final String ACTION_RELOAD_LAYOUT =
+            "com.keyboardhtml.action.RELOAD_LAYOUT";
 
     @Override
     public View onCreateInputView() {
@@ -46,6 +51,21 @@ public class KeyboardService extends InputMethodService {
         }
     }
 
+    /**
+     * Layout picked in the config screen while this keyboard is active:
+     * reload the web view right away (cache dropped, the page may also have
+     * new content after re-importing the same zip name).
+     */
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null && ACTION_RELOAD_LAYOUT.equals(intent.getAction())
+                && keyboardView != null) {
+            loadedLayoutUrl = null;
+            keyboardView.post(this::loadCurrentLayout);
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     /** Fullscreen extract mode off: the WebView keyboard must stay visible over fields. */
     @Override
     public boolean onEvaluateFullscreenMode() {
@@ -62,15 +82,8 @@ public class KeyboardService extends InputMethodService {
 
     /** Selected installed layout (internal storage), or the bundled default. */
     private String selectedLayoutUrl() {
-        LayoutRepository repository = new LayoutRepository(layoutsRoot());
-        String id = repository.currentLayoutId();
-        if (id != null) {
-            File file = new File(layoutsRoot(), id + "/index.html");
-            if (file.isFile()) {
-                return Uri.fromFile(file).toString();
-            }
-        }
-        return DEFAULT_LAYOUT_URL;
+        String uri = new LayoutRepository(layoutsRoot()).currentLayoutUri();
+        return uri == null ? DEFAULT_LAYOUT_URL : uri;
     }
 
     private File layoutsRoot() {
