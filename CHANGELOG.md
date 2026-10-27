@@ -4,6 +4,14 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+### Added
+
+- Built-in keyboard replaced with a complete dark Gboard-style QWERTY:
+  three sheets (letters, symbols 1/2, symbols 2/2 incl. currency, math and
+  inverted marks), one-shot shift, page toggle (`2/2`/`1/2`), and the
+  `!#1`/`ABC` sheet switch; special keys are UI-only and never leak text
+  through the bridge (spec-tested in `DefaultKeyboardAssetTest`).
+
 ### Changed
 
 - `manifest.json` is now parsed with Gson (2.15.0) instead of the hand-written

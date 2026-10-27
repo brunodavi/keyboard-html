@@ -3,9 +3,10 @@ package com.keyboardhtml;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /** Shared helper for tests that inspect project files (gradle.properties etc.). */
@@ -35,7 +36,8 @@ final class ProjectFiles {
         StringBuilder out = new StringBuilder();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(file), StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null) {
                 out.append(line).append('\n');

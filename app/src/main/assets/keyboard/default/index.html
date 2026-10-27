@@ -5,61 +5,241 @@
 <style>
   html, body {
     margin: 0; padding: 0;
-    background: #1b2733;
+    background: #1e1f20;
     font-family: sans-serif;
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
-  #kb { display: flex; flex-direction: column; gap: 5px; padding: 5px; }
-  .row { display: flex; gap: 4px; justify-content: center; }
+  #kb { display: flex; flex-direction: column; gap: 6px; padding: 6px 4px 8px; }
+  .sheet { display: none; flex-direction: column; gap: 6px; }
+  .sheet.active { display: flex; }
+  .row { display: flex; gap: 5px; }
   button {
     flex: 1;
-    max-width: 40px;
     height: 46px;
     font-size: 16px;
-    color: #e8eef5;
-    background: #2e3b47;
+    color: #e8eaed;
+    background: #333537;
     border: 0;
-    border-radius: 7px;
+    border-radius: 6px;
     outline: none;
+    font-family: sans-serif;
   }
-  button.act { max-width: 72px; background: #41525f; font-size: 13px; }
-  button.wide { max-width: 64%; background: #41525f; }
-  button:active { background: #5b93d8; color: #ffffff; }
+  button.fn { background: #2b2d2f; font-size: 14px; }
+  button.f15 { flex: 1.45; }
+  button.space { flex: 4.6; font-size: 14px; }
+  button.accent { background: #8ab4f8; color: #202124; }
+  button:active { background: #5f6368; color: #ffffff; }
+  button.accent:active { background: #aecbfa; color: #202124; }
+  button.shift-on { color: #8ab4f8; }
 </style>
 </head>
 <body>
 <div id="kb">
-  <div class="row" data-keys="qwertyuiop"></div>
-  <div class="row" data-keys="asdfghjkl"></div>
-  <div class="row" data-keys="zxcvbnm"></div>
-  <div class="row">
-    <button class="act" data-key="backspace">BKSP</button>
-    <button class="wide" data-key="space">SPACE</button>
-    <button class="act" data-key="enter">ENTER</button>
+
+  <div class="sheet active" data-sheet="letters">
+    <div class="row" data-keys="qwertyuiop"></div>
+    <div class="row" data-keys="asdfghjkl"></div>
+    <div class="row">
+      <button class="fn f15" data-ui="shift">&#8679;</button>
+      <div class="row" data-keys="zxcvbnm"></div>
+      <button class="fn f15" data-key="backspace">&#9003;</button>
+    </div>
+    <div class="row">
+      <button class="fn f15" data-ui="symbols">!#1</button>
+      <button data-key=",">,</button>
+      <button class="space" data-key="space">&#9251;</button>
+      <button data-key=".">.</button>
+      <button class="accent f15" data-key="enter">&#8629;</button>
+    </div>
   </div>
+
+  <div class="sheet" data-sheet="symbols-1">
+    <div class="row">
+      <button data-key="1">1</button><button data-key="2">2</button>
+      <button data-key="3">3</button><button data-key="4">4</button>
+      <button data-key="5">5</button><button data-key="6">6</button>
+      <button data-key="7">7</button><button data-key="8">8</button>
+      <button data-key="9">9</button><button data-key="0">0</button>
+    </div>
+    <div class="row">
+      <button data-key="!">!</button><button data-key="@">@</button>
+      <button data-key="#">#</button><button data-key="$">$</button>
+      <button data-key="%">%</button><button data-key="€">€</button>
+      <button data-key="&amp;">&amp;</button><button data-key="*">*</button>
+      <button data-key="(">(</button><button data-key=")">)</button>
+    </div>
+    <div class="row">
+      <button class="fn f15" data-ui="page-toggle">2/2</button>
+      <button data-key="-">-</button><button data-key="'">'</button>
+      <button data-key="&quot;">"</button><button data-key=":">:</button>
+      <button data-key=";">;</button><button data-key=",">,</button>
+      <button data-key="?">?</button>
+      <button class="fn f15" data-key="backspace">&#9003;</button>
+    </div>
+    <div class="row">
+      <button class="fn f15" data-ui="letters">ABC</button>
+      <button data-key=",">,</button>
+      <button class="space" data-key="space">&#9251;</button>
+      <button data-key=".">.</button>
+      <button class="accent f15" data-key="enter">&#8629;</button>
+    </div>
+  </div>
+
+  <div class="sheet" data-sheet="symbols-2">
+    <div class="row">
+      <button data-key="+">+</button><button data-key="×">×</button>
+      <button data-key="÷">÷</button><button data-key="=">=</button>
+      <button data-key="&lt;">&lt;</button><button data-key="&gt;">&gt;</button>
+      <button data-key="{">{</button><button data-key="}">}</button>
+      <button data-key="[">[</button><button data-key="]">]</button>
+    </div>
+    <div class="row">
+      <button data-key="€">€</button><button data-key="£">£</button>
+      <button data-key="₩">₩</button><button data-key="/">/</button>
+      <button data-key="~">~</button><button data-key="`">`</button>
+      <button data-key="•">•</button><button data-key="°">°</button>
+      <button data-key="❤">❤</button>
+    </div>
+    <div class="row">
+      <button class="fn f15" data-ui="page-toggle">1/2</button>
+      <button data-key="_">_</button><button data-key="\">&#92;</button>
+      <button data-key="|">|</button><button data-key="¬">¬</button>
+      <button data-key="¿">¿</button><button data-key="¡">¡</button>
+      <button class="fn f15" data-key="backspace">&#9003;</button>
+    </div>
+    <div class="row">
+      <button class="fn f15" data-ui="letters">ABC</button>
+      <button data-key=",">,</button>
+      <button class="space" data-key="space">&#9251;</button>
+      <button data-key=".">.</button>
+      <button class="accent f15" data-key="enter">&#8629;</button>
+    </div>
+  </div>
+
 </div>
 <script>
   (function () {
-    var rows = document.querySelectorAll('.row[data-keys]');
-    for (var r = 0; r < rows.length; r++) {
-      var keys = rows[r].getAttribute('data-keys').split('');
-      for (var i = 0; i < keys.length; i++) {
-        var key = document.createElement('button');
-        key.textContent = keys[i];
-        key.setAttribute('data-key', keys[i]);
-        rows[r].appendChild(key);
+    var kb = document.getElementById('kb');
+
+    function buildGeneratedRows() {
+      var rows = kb.querySelectorAll('.row[data-keys]');
+      for (var r = 0; r < rows.length; r++) {
+        var keys = rows[r].getAttribute('data-keys').split('');
+        for (var i = 0; i < keys.length; i++) {
+          var key = document.createElement('button');
+          key.textContent = keys[i];
+          key.setAttribute('data-key', keys[i]);
+          rows[r].appendChild(key);
+        }
       }
     }
-    document.addEventListener('click', function (event) {
+
+    function activeSheet() {
+      return kb.querySelector('.sheet.active');
+    }
+
+    function setToggleLabel(sheet) {
+      var toggler = kb.querySelector('[data-ui="page-toggle"]');
+      if (toggler) {
+        toggler.textContent = sheet === 'symbols-1' ? '2/2' : '1/2';
+      }
+    }
+
+    // ---- shift: one-shot; auto releases after a typed key ----
+    var shiftOn = false;
+
+    function isLetterKey(ch) {
+      return ch.length === 1 && ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'));
+    }
+
+    function renderCase() {
+      var keys = activeSheet().querySelectorAll('button[data-key]');
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var ch = key.getAttribute('data-key');
+        if (isLetterKey(ch)) {
+          var shown = shiftOn ? ch.toUpperCase() : ch.toLowerCase();
+          key.textContent = shown;
+          key.setAttribute('data-key', shown);
+        }
+      }
+    }
+
+    function paintShift() {
+      var shifter = activeSheet().querySelector('[data-ui="shift"]');
+      if (shifter) {
+        shifter.classList.toggle('shift-on', shiftOn);
+      }
+    }
+
+    function toggleShift() {
+      shiftOn = !shiftOn;
+      paintShift();
+      renderCase();
+    }
+
+    function releaseShift() {
+      if (!shiftOn) {
+        return;
+      }
+      shiftOn = false;
+      paintShift();
+      renderCase();
+    }
+
+    // ---- sheets and page toggle ----
+    function showSheet(name) {
+      var sheets = kb.querySelectorAll('.sheet');
+      for (var s = 0; s < sheets.length; s++) {
+        sheets[s].classList.toggle(
+                'active', sheets[s].getAttribute('data-sheet') === name);
+      }
+      paintShift();
+      renderCase();
+      setToggleLabel(name);
+    }
+
+    function togglePage() {
+      showSheet(activeSheet().getAttribute('data-sheet') === 'symbols-1'
+              ? 'symbols-2' : 'symbols-1');
+    }
+
+    // ---- wiring ----
+    kb.addEventListener('click', function (event) {
       var target = event.target;
-      if (target && target.getAttribute && target.getAttribute('data-key')) {
-        event.preventDefault();
-        KeyboardBridge.onKey(target.getAttribute('data-key'));
+      if (!target || target.tagName !== 'BUTTON') {
+        return;
+      }
+      event.preventDefault();
+      var ui = target.getAttribute('data-ui');
+      if (ui === 'shift') {
+        toggleShift();
+        return;
+      }
+      if (ui === 'symbols') {
+        showSheet('symbols-1');
+        return;
+      }
+      if (ui === 'letters') {
+        showSheet('letters');
+        return;
+      }
+      if (ui === 'page-toggle') {
+        togglePage();
+        return;
+      }
+      var key = target.getAttribute('data-key');
+      if (key) {
+        KeyboardBridge.onKey(key);
+        releaseShift();
       }
     });
+
+    buildGeneratedRows();
+    renderCase();
   })();
 </script>
 </body>

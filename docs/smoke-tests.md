@@ -9,14 +9,25 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 
 ## S1 — built-in keyboard works
 
+The built-in keyboard is a dark Gboard-style QWERTY with three sheets,
+no number row, no extra toolbars:
+
+- **Letters**: `qwertyuiop` / `asdfghjkl` / `⇧ zxcvbnm ⌫` / `!#1 , ␣ . ↵`
+- **Symbols 1/2**: `1234567890` / `! @ # $ % € & * ( )` / `2/2 - ' " : ; , ? ⌫` / `ABC , ␣ . ↵`
+- **Symbols 2/2**: `+ × ÷ = < > { } [ ]` / `€ £ ₩ / ~ \` • ° ❤` / `1/2 _ \ | ¬ ¿ ¡ ⌫` / `ABC , ␣ . ↵`
+
 1. Open the app → title "Keyboard HTML", status shows "not enabled".
 2. Tap **Enable keyboard** → system screen shows "Keyboard HTML" toggle → turn it on.
 3. Back in app → status shows "enabled".
 4. Tap **Select keyboard** → picker lists "Keyboard HTML" → pick it.
 5. Status shows "active".
-6. Tap the test field → the dark HTML keyboard appears.
-7. Letters type into the field correctly, space inserts a space.
-8. BKSP deletes one character, ENTER closes the field/submits.
+6. Tap the test field → the dark keyboard appears (letters sheet).
+7. Type a word; tap ⇧ once → next letter appears uppercase and auto-releases.
+8. Tap **!#1** → symbols 1/2: type `1 ! @ €` ...; tap **2/2 ↔ 1/2** → the second symbol sheet swaps; tap **ABC** → back to letters.
+9. ⌫ deletes, ␣ inserts space, ◦↵ submits the field.
+
+Not yet (special keys are visual-only for now): shift caps-lock/autocaps,
+long-press accents, voice/clipboard bar, theme variants.
 
 ## S2 — shortcuts behave
 
