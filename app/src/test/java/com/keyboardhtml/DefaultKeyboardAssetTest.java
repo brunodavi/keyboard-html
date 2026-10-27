@@ -161,4 +161,13 @@ public class DefaultKeyboardAssetTest {
                 html.matches("(?s).*data-sheet=\"symbols-2\"(?:.(?!data-sheet))+?"
                         + "data-ui=\"page-toggle\">2/2.*"));
     }
+
+    @Test
+    public void theKeyboardNeverScrolls() throws IOException {
+        String html = asset();
+        assertTrue("page must fill the view and hide overflow",
+                html.matches("(?s).*html, body \\{[^}]*height: 100%;[^}]*overflow: hidden;.*"));
+        assertTrue("keyboard container must not overflow either",
+                html.matches("(?s).*#kb \\{[^}]*height: 100%;[^}]*box-sizing: border-box;[^}]*overflow: hidden;.*"));
+    }
 }

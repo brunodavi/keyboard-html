@@ -38,6 +38,10 @@ public class KeyboardService extends InputMethodService {
         keyboardView.addJavascriptInterface(
                 new KeyboardBridge(this::currentTextOps), "KeyboardBridge");
         keyboardView.setBackgroundColor(Color.TRANSPARENT);
+        // the keyboard page must never scroll: overflow is locked in CSS and
+        // the web view scrollbars are disabled as a second guard
+        keyboardView.setVerticalScrollBarEnabled(false);
+        keyboardView.setHorizontalScrollBarEnabled(false);
         loadedLayoutUrl = null;
         return keyboardView;
     }
