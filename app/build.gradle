@@ -10,6 +10,7 @@ android {
     }
 
     defaultConfig {
+        resValue "string", "app_name", APP_NAME.toString()
         manifestPlaceholders = [APP_NAME: APP_NAME.toString()]
         applicationId APP_PACKAGE
         versionName APP_VERSION

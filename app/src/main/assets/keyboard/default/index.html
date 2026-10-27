@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    background: #1b2733;
+    font-family: sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #kb { display: flex; flex-direction: column; gap: 5px; padding: 5px; }
+  .row { display: flex; gap: 4px; justify-content: center; }
+  button {
+    flex: 1;
+    max-width: 40px;
+    height: 46px;
+    font-size: 16px;
+    color: #e8eef5;
+    background: #2e3b47;
+    border: 0;
+    border-radius: 7px;
+    outline: none;
+  }
+  button.act { max-width: 72px; background: #41525f; font-size: 13px; }
+  button.wide { max-width: 64%; background: #41525f; }
+  button:active { background: #5b93d8; color: #ffffff; }
+</style>
+</head>
+<body>
+<div id="kb">
+  <div class="row" data-keys="qwertyuiop"></div>
+  <div class="row" data-keys="asdfghjkl"></div>
+  <div class="row" data-keys="zxcvbnm"></div>
+  <div class="row">
+    <button class="act" data-key="backspace">BKSP</button>
+    <button class="wide" data-key="space">SPACE</button>
+    <button class="act" data-key="enter">ENTER</button>
+  </div>
+</div>
+<script>
+  (function () {
+    var rows = document.querySelectorAll('.row[data-keys]');
+    for (var r = 0; r < rows.length; r++) {
+      var keys = rows[r].getAttribute('data-keys').split('');
+      for (var i = 0; i < keys.length; i++) {
+        var key = document.createElement('button');
+        key.textContent = keys[i];
+        key.setAttribute('data-key', keys[i]);
+        rows[r].appendChild(key);
+      }
+    }
+    document.addEventListener('click', function (event) {
+      var target = event.target;
+      if (target && target.getAttribute && target.getAttribute('data-key')) {
+        event.preventDefault();
+        KeyboardBridge.onKey(target.getAttribute('data-key'));
+      }
+    });
+  })();
+</script>
+</body>
+</html>
