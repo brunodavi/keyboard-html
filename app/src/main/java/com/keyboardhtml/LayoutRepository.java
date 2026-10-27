@@ -72,4 +72,12 @@ final class LayoutRepository {
             throw new IllegalStateException("cannot write layout selection", e);
         }
     }
+
+    /** Drops the selection so the keyboard falls back to the built-in default. */
+    void clearSelection() {
+        File selection = new File(root, SELECTION_FILE);
+        if (selection.exists() && !selection.delete()) {
+            throw new IllegalStateException("cannot clear layout selection");
+        }
+    }
 }

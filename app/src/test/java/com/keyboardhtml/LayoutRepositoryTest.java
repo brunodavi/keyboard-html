@@ -1,6 +1,7 @@
 package com.keyboardhtml;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
@@ -85,6 +86,24 @@ public class LayoutRepositoryTest {
         }
         reader.close();
         assertEquals("no extra bytes beyond the id", "alpha", out.toString());
+    }
+
+    @Test
+    public void clearingSelectionReturnsToTheBuiltInDefault() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+        repository.currentLayoutId("alpha");
+        assertEquals("alpha", repository.currentLayoutId());
+
+        repository.clearSelection();
+
+        assertNull("back to unselected (built-in default)", repository.currentLayoutId());
+        assertFalse("marker file removed", new File(root, LayoutRepository.SELECTION_FILE).exists());
+    }
+
+    @Test
+    public void clearingWithoutSelectionIsANoop() throws IOException {
+        repository.clearSelection();
+        assertNull(repository.currentLayoutId());
     }
 
     private void write(File folder, String relative, String content) throws IOException {

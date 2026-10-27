@@ -1,6 +1,7 @@
 package com.keyboardhtml;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Single configuration screen (XML layout): shortcuts to enable and
@@ -114,21 +116,26 @@ public class MainActivity extends Activity {
 
     private void chooseLayout() {
         LayoutRepository repository = layoutsRepository();
-        java.util.List<String> layouts = repository.listLayouts();
-        if (layouts.isEmpty()) {
-            Toast.makeText(this, R.string.no_layouts_toast, Toast.LENGTH_SHORT).show();
-            return;
+        List<String> layouts = repository.listLayouts();
+        String[] options = new String[layouts.size() + 1];
+        options[0] = getString(R.string.default_layout_label);
+        for (int i = 0; i < layouts.size(); i++) {
+            options[i + 1] = layouts.get(i);
         }
-        String[] options = layouts.toArray(new String[0]);
-        new android.app.AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.choose_layout_title)
                 .setItems(options, (dialog, which) -> {
                     try {
-                        repository.currentLayoutId(options[which]);
+                        if (which == 0) {
+                            repository.clearSelection();
+                            Toast.makeText(this, R.string.default_layout_toast, Toast.LENGTH_SHORT).show();
+                        } else {
+                            repository.currentLayoutId(options[which]);
+                            Toast.makeText(this,
+                                    getString(R.string.selected_toast, options[which]),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                         refreshStatus();
-                        Toast.makeText(this,
-                                getString(R.string.selected_toast, options[which]),
-                                Toast.LENGTH_SHORT).show();
                     } catch (IllegalArgumentException e) {
                         Toast.makeText(this,
                                 getString(R.string.import_failed_toast, e.getMessage()),

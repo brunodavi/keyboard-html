@@ -6,7 +6,8 @@
     <string name="action_import">Import keyboard (.zip)</string>
     <string name="action_layout">Choose layout</string>
     <string name="choose_layout_title">Installed layouts</string>
-    <string name="no_layouts_toast">No imported layouts yet — import a .zip first.</string>
+    <string name="default_layout_label">Default (built-in)</string>
+    <string name="default_layout_toast">Back to the built-in default layout</string>
     <string name="imported_toast">Imported and selected “%1$s”</string>
     <string name="selected_toast">Selected layout “%1$s”</string>
     <string name="import_failed_toast">Import failed: %1$s</string>
