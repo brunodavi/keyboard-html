@@ -7,9 +7,8 @@ import org.junit.Test;
 
 /**
  * TDD for the optional keyboard manifest.json: the parser extracts the
- * display name without any JSON library (org.json is not available in
- * unit tests), staying forgiving to formatting but strict about manifest
- * content.
+ * display name with Gson, staying forgiving to formatting but strict
+ * about manifest content.
  */
 public class KeyboardManifestTest {
 
@@ -30,8 +29,9 @@ public class KeyboardManifestTest {
     }
 
     @Test
-    public void escapesInsideValuesAreKeptVerbatim() {
-        assertEquals("Tabs\\tHere", KeyboardManifest.parse("{\"name\":\"Tabs\\tHere\"}").name());
+    public void escapesDecodePerJson() {
+        assertEquals("Tabs\tHere", KeyboardManifest.parse("{\"name\":\"Tabs\\tHere\"}").name());
+        assertEquals("Café", KeyboardManifest.parse("{\"name\":\"Caf\\u00e9\"}").name());
     }
 
     @Test

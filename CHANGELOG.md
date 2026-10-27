@@ -4,6 +4,12 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
 
 ## [Unreleased]
 
+### Changed
+
+- `manifest.json` is now parsed with Gson (2.15.0) instead of the hand-written
+  mini-parser: standard JSON semantics apply (escapes such as `\t`/`\u00e9`
+  decode inside the display name) and future fields become straightforward.
+
 ## [0.1.1] - 2026-10-27
 
 ### Fixed
