@@ -11,6 +11,15 @@ All notable changes to keyboard-html follow the [Keep a Changelog](https://keepa
   inverted marks), one-shot shift, page toggle (`2/2`/`1/2`), and the
   `!#1`/`ABC` sheet switch; special keys are UI-only and never leak text
   through the bridge (spec-tested in `DefaultKeyboardAssetTest`).
+- Letters row is a shared 20-column CSS grid (on-device tested variant):
+  uniform key widths, shift/backspace span three columns each.
+
+### Fixed
+
+- Crash when reselecting Keyboard HTML after switching to another IME:
+  the layout reload used startService, which starts/stickily restarts the
+  InputMethodService outside the input-method lifecycle; replaced with an
+  in-app broadcast received by the service.
 
 ### Changed
 

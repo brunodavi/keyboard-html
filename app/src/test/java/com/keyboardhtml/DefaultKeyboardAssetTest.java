@@ -30,9 +30,6 @@ public class DefaultKeyboardAssetTest {
     /** data-ui on a static <button> tag. */
     private static final Pattern BUTTON_UI =
             Pattern.compile("<button[^>]*?data-ui=\"([^\"]*)\"");
-    /** JS-generated letter rows. */
-    private static final Pattern GENERATED_ROW =
-            Pattern.compile("data-keys=\"([^\"]*)\"");
 
     private static String asset() throws IOException {
         return ProjectFiles.readProjectFile(ASSET);
@@ -72,11 +69,24 @@ public class DefaultKeyboardAssetTest {
 
     @Test
     public void lettersSheetHasTheClassicQwertyRows() throws IOException {
+        Set<String> keys = values(asset(), BUTTON_KEY);
+        String letters = "qwertyuiopasdfghjklzxcvbnm";
+        for (char letter : letters.toCharArray()) {
+            assertTrue("missing letter " + letter, keys.contains(String.valueOf(letter)));
+        }
+        assertFalse("nested letter rows collapse the middle letters (old bug)",
+                asset().contains("data-keys="));
+    }
+
+    @Test
+    public void lettersSheetIsAGrid() throws IOException {
         String html = asset();
-        Set<String> rows = values(html, GENERATED_ROW);
-        assertTrue(rows.contains("qwertyuiop"));
-        assertTrue(rows.contains("asdfghjkl"));
-        assertTrue(rows.contains("zxcvbnm"));
+        assertTrue("letters rows use a shared 20-column grid",
+                html.contains("grid-template-columns: repeat(20, 1fr);"));
+        assertTrue("letters span two columns",
+                html.contains(".lg > button { grid-column: span 2; }"));
+        assertTrue("shift/backspace span three columns",
+                html.contains(".lg > button.fn.side { grid-column: span 3; }"));
     }
 
     @Test
@@ -139,10 +149,10 @@ public class DefaultKeyboardAssetTest {
     @Test
     public void shiftAndBackspaceMatchTheLetterWidthOnTheLettersRow() throws IOException {
         String html = asset();
-        assertTrue("letters row fn keys must use the compact (letter-width) flex",
-                html.contains("button.compact { flex: 1; }"));
-        assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-ui=\"shift\".*"));
-        assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-key=\"backspace\".*"));
+        assertTrue(html.matches("(?s).*<button class=\"fn side\" data-ui=\"shift\".*"));
+        assertTrue(html.matches("(?s).*<button class=\"fn side\" data-key=\"backspace\".*"));
+        assertFalse("old compact flex class must be gone (grid owns the sizes)",
+                html.contains("button.compact"));
     }
 
     @Test

@@ -34,10 +34,17 @@
     font-family: sans-serif;
   }
   button.fn { background: #2b2d2f; font-size: 14px; }
-  button.compact { flex: 1; }
   button.f15 { flex: 1.45; }
   button.space { flex: 4.6; font-size: 14px; }
   button.accent { background: #8ab4f8; color: #202124; }
+  .lg {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 5px;
+  }
+  .lg > button { grid-column: span 2; }
+  .lg > .pad { grid-column: span 1; }
+  .lg > button.fn.side { grid-column: span 3; }
   button:active { background: #5f6368; color: #ffffff; }
   button.accent:active { background: #aecbfa; color: #202124; }
   button.shift-on { color: #8ab4f8; }
@@ -52,12 +59,29 @@
 <div id="kb">
 
   <div class="sheet active" data-sheet="letters">
-    <div class="row" data-keys="qwertyuiop"></div>
-    <div class="row" data-keys="asdfghjkl"></div>
-    <div class="row">
-      <button class="fn compact" data-ui="shift">&#8679;</button>
-      <div class="row" data-keys="zxcvbnm"></div>
-      <button class="fn compact" data-key="backspace">&#9003;</button>
+    <div class="lg">
+      <button data-key="q">q</button><button data-key="w">w</button>
+      <button data-key="e">e</button><button data-key="r">r</button>
+      <button data-key="t">t</button><button data-key="y">y</button>
+      <button data-key="u">u</button><button data-key="i">i</button>
+      <button data-key="o">o</button><button data-key="p">p</button>
+    </div>
+    <div class="lg">
+      <span class="pad"></span>
+      <button data-key="a">a</button><button data-key="s">s</button>
+      <button data-key="d">d</button><button data-key="f">f</button>
+      <button data-key="g">g</button><button data-key="h">h</button>
+      <button data-key="j">j</button><button data-key="k">k</button>
+      <button data-key="l">l</button>
+      <span class="pad"></span>
+    </div>
+    <div class="lg">
+      <button class="fn side" data-ui="shift">&#8679;</button>
+      <button data-key="z">z</button><button data-key="x">x</button>
+      <button data-key="c">c</button><button data-key="v">v</button>
+      <button data-key="b">b</button><button data-key="n">n</button>
+      <button data-key="m">m</button>
+      <button class="fn side" data-key="backspace">&#9003;</button>
     </div>
     <div class="row">
       <button class="fn f15" data-ui="symbols">!#1</button>
@@ -135,19 +159,6 @@
 <script>
   (function () {
     var kb = document.getElementById('kb');
-
-    function buildGeneratedRows() {
-      var rows = kb.querySelectorAll('.row[data-keys]');
-      for (var r = 0; r < rows.length; r++) {
-        var keys = rows[r].getAttribute('data-keys').split('');
-        for (var i = 0; i < keys.length; i++) {
-          var key = document.createElement('button');
-          key.textContent = keys[i];
-          key.setAttribute('data-key', keys[i]);
-          rows[r].appendChild(key);
-        }
-      }
-    }
 
     function activeSheet() {
       return kb.querySelector('.sheet.active');
@@ -252,7 +263,6 @@
       }
     });
 
-    buildGeneratedRows();
     renderCase();
   })();
 </script>

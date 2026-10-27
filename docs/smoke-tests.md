@@ -21,11 +21,14 @@ no number row, no extra toolbars:
 3. Back in app → status shows "enabled".
 4. Tap **Select keyboard** → picker lists "Keyboard HTML" → pick it.
 5. Status shows "active".
-6. Tap the test field → the dark keyboard appears (letters sheet).
+6. Tap the test field → the dark keyboard appears (letters sheet on a
+   20-column grid: shift/backspace span 3, letters span 2).
 7. Type a word; tap ⇧ once → next letter appears uppercase and auto-releases;
    double-tap ⇧ → caps lock (blue underline stays on) until tapped again.
 8. Tap **!#1** → symbols 1/2: type `1 ! @ €` ...; tap **2/2 ↔ 1/2** → the second symbol sheet swaps; tap **ABC** → back to letters.
 9. ⌫ deletes, ␣ inserts space, ◦↵ submits the field.
+10. Switch to another IME and back to Keyboard HTML in the system picker →
+    the keyboard must come back without crashing.
 
 Not yet (special keys are visual-only for now): shift caps-lock/autocaps,
 long-press accents, voice/clipboard bar, theme variants.

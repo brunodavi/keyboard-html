@@ -172,10 +172,10 @@ public class MainActivity extends Activity {
                 .show();
     }
 
-    /** Nudges the live keyboard service so an active web view reloads the selection. */
+    /** Notifies the live keyboard so an active web view reloads the selection. */
     private void refreshKeyboard() {
-        startService(new Intent(this, KeyboardService.class)
-                .setAction(KeyboardService.ACTION_RELOAD_LAYOUT));
+        sendBroadcast(new Intent(KeyboardService.ACTION_RELOAD_LAYOUT)
+                .setPackage(getPackageName()));
     }
 
     /** Manifest display name when declared, otherwise the folder id. */

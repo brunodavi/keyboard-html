@@ -1,9 +1,13 @@
 package com.keyboardhtml;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
-import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -28,6 +32,33 @@ public class KeyboardService extends InputMethodService {
     /** Sent after a layout change so an active keyboard picks it up at once. */
     public static final String ACTION_RELOAD_LAYOUT =
             "com.keyboardhtml.action.RELOAD_LAYOUT";
+
+    private final BroadcastReceiver reloadListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (keyboardView != null) {
+                loadedLayoutUrl = null;
+                keyboardView.post(KeyboardService.this::loadCurrentLayout);
+            }
+        }
+    };
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        IntentFilter filter = new IntentFilter(ACTION_RELOAD_LAYOUT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(reloadListener, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(reloadListener, filter);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(reloadListener);
+        super.onDestroy();
+    }
 
     @Override
     public View onCreateInputView() {
@@ -58,18 +89,14 @@ public class KeyboardService extends InputMethodService {
 
     /**
      * Layout picked in the config screen while this keyboard is active:
-     * reload the web view right away (cache dropped, the page may also have
-     * new content after re-importing the same zip name).
+     * the app broadcasts ACTION_RELOAD_LAYOUT and the receiver above
+     * reloads the web view right away (cache dropped, the page may also
+     * have new content after re-importing the same zip name). Deliberately
+     * no started-service path: running an InputMethodService through
+     * startService puts it outside the input-method lifecycle and the
+     * system re-creates it unattached, which crashes when the user
+     * reselects the keyboard.
      */
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && ACTION_RELOAD_LAYOUT.equals(intent.getAction())
-                && keyboardView != null) {
-            loadedLayoutUrl = null;
-            keyboardView.post(this::loadCurrentLayout);
-        }
-        return super.onStartCommand(intent, flags, startId);
-    }
 
     /** Fullscreen extract mode off: the WebView keyboard must stay visible over fields. */
     @Override
