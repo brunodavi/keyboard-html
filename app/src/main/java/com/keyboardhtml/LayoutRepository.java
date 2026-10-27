@@ -73,6 +73,38 @@ final class LayoutRepository {
         }
     }
 
+    /**
+     * Human display name of a layout: manifest.json "name" when declared
+     * (and valid), otherwise the layout folder id itself.
+     */
+    String layoutName(String layoutId) {
+        if (!listLayouts().contains(layoutId)) {
+            throw new IllegalArgumentException("unknown layout: " + layoutId);
+        }
+        File manifest = new File(root, layoutId + "/manifest.json");
+        String name = null;
+        if (manifest.isFile()) {
+            try {
+                name = KeyboardManifest.parse(readText(manifest)).name();
+            } catch (IOException unreadable) {
+                name = null;
+            }
+        }
+        return name == null ? layoutId : name;
+    }
+
+    private static String readText(File file) throws IOException {
+        InputStreamReader in = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+        StringBuilder out = new StringBuilder();
+        char[] buffer = new char[2048];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.append(buffer, 0, read);
+        }
+        in.close();
+        return out.toString();
+    }
+
     /** Drops the selection so the keyboard falls back to the built-in default. */
     void clearSelection() {
         File selection = new File(root, SELECTION_FILE);

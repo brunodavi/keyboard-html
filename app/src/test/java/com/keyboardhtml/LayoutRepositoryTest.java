@@ -106,6 +106,39 @@ public class LayoutRepositoryTest {
         assertNull(repository.currentLayoutId());
     }
 
+    @Test
+    public void layoutNameComesFromTheOptionalManifestJson() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+        write(root, "alpha/manifest.json", "{\"name\":\"Alpha Pro\",\"author\":\"b\"}");
+
+        assertEquals("Alpha Pro", repository.layoutName("alpha"));
+    }
+
+    @Test
+    public void layoutNameFallsBackToTheFolderId() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+
+        assertEquals("alpha", repository.layoutName("alpha"));
+    }
+
+    @Test
+    public void malformedManifestStillFallsBackToTheFolderId() throws IOException {
+        write(root, "alpha/index.html", "alpha");
+        write(root, "alpha/manifest.json", "{ not json ");
+
+        assertEquals("alpha", repository.layoutName("alpha"));
+    }
+
+    @Test
+    public void unknownLayoutIdCannotBeNamed() throws IOException {
+        try {
+            repository.layoutName("ghost");
+            fail("expected IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
+            // ok
+        }
+    }
+
     private void write(File folder, String relative, String content) throws IOException {
         File target = new File(folder, relative);
         target.getParentFile().mkdirs();

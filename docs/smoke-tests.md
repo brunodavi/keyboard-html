@@ -41,13 +41,20 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 
 ### Building a test layout zip
 
-Any zip with `index.html` at root works; highlight one deviation and it is rejected:
+Any zip with `index.html` at root works. Optional `manifest.json` gives the keyboard a display name (otherwise the zip file name is shown):
 
 ```text
 my-keeb.zip
   ├─ index.html      ← required
+  ├─ manifest.json   ← optional: {"name": "My Keeb"}
   ├─ kbd.css         ← optional
 ```
+
+### Notes
+
+- **Enter** sends a plain hardware-style ENTER event (does not force `actionDone`-style submit); selection-aware behavior is planned.
+- **Backspace** clears the current selection in one step, otherwise deletes one character to the left.
+- The chooser always offers **Default (built-in)** to return to the bundled QWERTY.
 
 Minimal `index.html` for testing (red background proves it loads):
 

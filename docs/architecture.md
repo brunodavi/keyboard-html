@@ -5,6 +5,7 @@ keyboard-html is an experimental Android on-screen keyboard app. Objective: full
 ## Design decisions
 
 - Keyboard UI is **HTML rendered in a WebView**; the web layer talks to the Android keyboard service through a **JS↔Android API** (JavascriptInterface or equivalent). Layouts become ordinary web files anyone can author.
+- Keyboard packages may include an optional **`manifest.json`** next to `index.html`; MVP reads the display `name` (falling back to the folder id). Future fields: `author`, `version`, keyboard settings.
 - Keyboard layouts are user-importable **.zip packages**, extracted into the app's **internal storage** — never use broad storage permissions; use the system file manager via intent (SAF) for picking the zip.
 - Default bundled keyboards (QWERTY etc.) ship as HTML assets inside the APK.
 - The app must **work fully offline** — no network dependencies at runtime.

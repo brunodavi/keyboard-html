@@ -100,7 +100,8 @@ public class MainActivity extends Activity {
             String imported = importLayout(data.getData());
             layoutsRepository().currentLayoutId(imported);
             refreshStatus();
-            Toast.makeText(this, getString(R.string.imported_toast, imported), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.imported_toast,
+                    displayLabel(layoutsRepository(), imported)), Toast.LENGTH_LONG).show();
         } catch (IOException | ZipLayoutExtractor.InvalidLayout | IllegalArgumentException e) {
             Toast.makeText(this,
                     getString(R.string.import_failed_toast, e.getMessage()), Toast.LENGTH_LONG).show();
@@ -120,7 +121,7 @@ public class MainActivity extends Activity {
         String[] options = new String[layouts.size() + 1];
         options[0] = getString(R.string.default_layout_label);
         for (int i = 0; i < layouts.size(); i++) {
-            options[i + 1] = layouts.get(i);
+            options[i + 1] = displayLabel(repository, layouts.get(i));
         }
         new AlertDialog.Builder(this)
                 .setTitle(R.string.choose_layout_title)
@@ -130,9 +131,9 @@ public class MainActivity extends Activity {
                             repository.clearSelection();
                             Toast.makeText(this, R.string.default_layout_toast, Toast.LENGTH_SHORT).show();
                         } else {
-                            repository.currentLayoutId(options[which]);
+                            repository.currentLayoutId(layouts.get(which - 1));
                             Toast.makeText(this,
-                                    getString(R.string.selected_toast, options[which]),
+                                    getString(R.string.selected_toast, displayLabel(repository, layouts.get(which - 1))),
                                     Toast.LENGTH_SHORT).show();
                         }
                         refreshStatus();
@@ -143,6 +144,12 @@ public class MainActivity extends Activity {
                     }
                 })
                 .show();
+    }
+
+    /** Manifest name when declared, with the folder id as a small suffix. */
+    private static String displayLabel(LayoutRepository repository, String layoutId) {
+        String name = repository.layoutName(layoutId);
+        return name.equals(layoutId) ? name : name + " (" + layoutId + ")";
     }
 
     private LayoutRepository layoutsRepository() {
