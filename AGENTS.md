@@ -30,11 +30,11 @@ This template is the base for an experimental on-screen keyboard app:
 
 - **TDD**: write the failing test first, then implement, then refactor. Every new feature or fix starts with a test. Run tests with `./gradlew test` (single test: `./gradlew :app:testDebugUnitTest --tests '<FullyQualifiedClassName>'`).
 
-- **Git flow + Conventional Commits**: branch off `develop` (`feat/...`, `fix/...`, `release/...`, `hotfix/...`, ...). Commit messages follow Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`, ...). Merge through a release branch into `main`; stable versions are marked by creating and **pushing a git tag on `main`**:
+- **Single-branch workflow + Conventional Commits**: the only permanent branch is `dev` (the default branch on GitHub). There are **no `main`, `develop`, `release/` or `hotfix/` branches**. Each feature/fix gets a short-lived branch off `dev` (`feat/...`, `fix/...`, `docs/...`, ...), it is merged back into `dev` and the branch is deleted afterwards. Commit messages follow Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`, ...). Production ("prd") is marked by **tags, not branches** — stable versions are marked by creating and **pushing a git tag**:
 
   ```bash
-  git checkout main && git merge --no-ff release/x.y.z
-  git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin main --tags
+  git checkout dev && git merge --no-ff feat/my-feature
+  git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin dev --tags
   ```
 
 - All docs, comments and commit messages in **English**; no Portuguese content in the repo.
