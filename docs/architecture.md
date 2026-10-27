@@ -17,4 +17,4 @@ keyboard-html is an experimental Android on-screen keyboard app. Objective: full
 
 ## Module layout
 
-Single module `app`, plain Java (no Kotlin, no Compose). Entry point `com.keyboardhtml.MainActivity`. App identity/versions/SDK levels all live in `gradle.properties` — see `docs/build.md`.
+Single module `app`, plain Java (no Kotlin, no Compose). Entry point `com.keyboardhtml.MainActivity`. The app's configuration screen is a standard Android **XML layout** (`res/layout/activity_main.xml`) for maintainability and styling; the keyboard itself stays an HTML WebView keyed through the JS bridge. App identity/versions/SDK levels all live in `gradle.properties` — see `docs/build.md`.
