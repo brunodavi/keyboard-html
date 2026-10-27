@@ -1,43 +1,22 @@
-# AGENTS.md
+# AGENTS.md — Work Guide
 
-Android app template designed for building **inside Termux** (and also works on desktop Linux). Single module (`app`), plain Java, no Kotlin.
+`keyboard-html` — Android on-screen keyboard app, HTML keyboard layouts rendered in a WebView, user-importable `.zip` packages, fully offline.
 
-## Build
+**Rule: this file only points to the work. All technical depth (how it's built, why, how it's released) lives in `docs/` — add any new technical documentation there, not here.**
 
-- `./gradlew` on first run auto-installs the Android SDK (via `com.quittle.setup-android-sdk` plugin) into `build/android-sdk-root` and writes `local.properties` (`sdk.dir`). Only JDK 17 is required beforehand; on Termux also install `aapt2` (`pkg install openjdk-17 aapt2`) — it's wired through `android.aapt2FromMavenOverride` in `gradle.properties` (commented/uncomment there).
-- Build APK: `./gradlew assembleDebug` → `app/build/outputs/apk/debug/app-debug.apk` (no `installDebug` target device path in Termux; install by copying the APK to `/sdcard/Download`).
-- On low-RAM devices uncomment `org.gradle.jvmargs=-Xmx512m` in `gradle.properties` or builds can kill the phone.
+## Read before working
 
-## Configuration quirks
+- `docs/build.md` — environment, build tasks, `gradle.properties` configuration quirks (Termux specifics)
+- `docs/architecture.md` — project requirements and design decisions (WebView + JS↔Android API, .zip layout packages, offline)
+- `docs/workflow.md` — mandatory workflow: TDD, commits directly on `dev` (tags mark production/“prd”), Conventional Commits, English-only repo
+- `docs/deployment.md` — the standard release procedure (bump version → Changelog section → tag → tag-triggered GitHub release); **always follow it, never improvise deploys**
 
-- **No hardcoded values in build files**: app ID, versions, SDK levels are read from `gradle.properties` (`APP_PACKAGE`, `APP_VERSION`, `APP_VERSION_CODE`, `APP_MIN_SDK_VERSION`, `APP_TARGET_SDK_VERSION`, `ANDROID_COMPILE_SDK_VERSION`, `ANDROID_BUILD_TOOLS_VERSION`, `ANDROID_GRADLE_PLUGIN_VERSION`). Root `build.gradle` throws if any is missing — adding app config means editing `gradle.properties`, not `app/build.gradle`.
-- `APP_PACKAGE` must match the Java package under `app/src/main/java/` (`com.keyboardhtml` currently) — it's used as both `namespace` and `applicationId`.
-- `APP_NAME` sets the app display name (launcher label) and is injected as a manifest placeholder — no hardcoded label in the manifest.
-- Java 17 source/target compatibility is fixed in `app/build.gradle`.
-- `local.properties` is generated/gitignored-adjacent; don't commit or hand-edit `sdk.dir`.
-- License acceptance for the auto-installed SDK lives in `app/licenses/android-sdk-license`; `LICENSES_DIR` env var can override the licenses directory.
+## Quick rules
 
-## Project purpose / intended app (user requirements)
-
-This template is the base for an experimental on-screen keyboard app:
-
-- Keyboard UI is **HTML rendered in a WebView**; the web layer talks to the Android keyboard service via a **JS↔Android API** (JavascriptInterface or equivalent).
-- Keyboard layouts are user-importable **.zip packages**, extracted into the app's **internal storage** — never use broad storage permissions; use the system file manager via intent (SAF) for picking the zip.
-- Default bundled keyboards (QWERTY etc.) ship as HTML assets inside the APK.
-- The app must **work fully offline** — no network dependencies at runtime.
-
-## Workflow rules (must follow)
-
-- **TDD**: write the failing test first, then implement, then refactor. Every new feature or fix starts with a test. Run tests with `./gradlew test` (single test: `./gradlew :app:testDebugUnitTest --tests '<FullyQualifiedClassName>'`).
-
-- **Single-branch workflow + Conventional Commits**: **everything is committed directly on `dev`** — the only branch there is (default branch on GitHub). Never create feature/work branches (`feat/...`, `fix/...`, `main`, `develop`, `release/`, `hotfix/`, ...) at any time. Commit messages follow Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`, ...). Production ("prd") is marked by **tags, not branches**: whenever `dev` reaches a stable state, mark the release by creating and **pushing a git tag** (tag version must match `APP_VERSION` in `gradle.properties`):
-
-  ```bash
-  git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin dev --tags
-  ```
-
-- All docs, comments and commit messages in **English**; no Portuguese content in the repo.
+- TDD: failing test first, implement, refactor. `./gradlew test`
+- Commits: directly on `dev`, Conventional Commits (`docs:`, `feat:`, `fix:`, ...); docs/comments/commits in English only
+- Production = git tags (`vX.Y.Z` matching `APP_VERSION`), never branches
 
 ## Docs
 
-`README.md` covers the Termux setup walkthrough (it overlaps with the above build notes).
+`README.md` stays user/problem-facing; contributors get details from the `docs/` files above.

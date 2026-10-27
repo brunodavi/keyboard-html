@@ -1,109 +1,40 @@
 # keyboard-html
 
-An Android app template for building apps whose UI is HTML rendered in a WebView (on-screen keyboard app). It simplifies the process of setting up an Android development environment directly inside **Termux**. It automatically installs the Android SDK when you run `./gradlew`, allowing you to build and manage Android apps on your device with ease.
+[![CI](https://github.com/brunodavi/keyboard-html/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/brunodavi/keyboard-html/actions/workflows/ci.yml)
+[![Release](https://github.com/brunodavi/keyboard-html/actions/workflows/release.yml/badge.svg)](https://github.com/brunodavi/keyboard-html/actions/workflows/release.yml)
 
+**Fully customized Android keyboards, without recompiling an APK.**
 
-## Prerequisites
+Want a different keyboard layout, theme, or behavior on Android? Today that means editing native code and rebuilding the app every time. keyboard-html turns a keyboard into something you can copy, tweak, and share as a plain `.zip` of web files — edit, import, use. No rebuild, no waiting, no developer license needed.
 
-Before using the template, make sure to update your packages and install the necessary dependencies in Termux:
+## What problem does this solve?
 
-```bash
-pkg update
-pkg upgrade # optional
-pkg install openjdk-17 aapt2
-```
+- **Every tiny tweak currently requires a full APK rebuild** — here, a keyboard is just files you edit.
+- **Customization is locked to developers** — here, anyone comfortable with HTML/CSS can author or restyle a keyboard.
+- **Keyboard apps often drag along more permissions than they need** — custom layout packages import through the system file picker into the app's internal storage, nothing asks for your files.
 
-*Ensure you have enough storage space and a stable internet connection for downloading components.*
+## Install
 
+Grab the latest APK from the [Releases page](https://github.com/brunodavi/keyboard-html/releases/latest) (verify with the `SHA256SUMS.txt` published in the release notes), then install it like any APK (allow unknown sources).
 
-## Running the Project
-
-To set up the SDK and dependencies automatically, simply run:
-
-```bash
-./gradlew
-```
-
-On the first run, Gradle will download the Android SDK and required build tools based on the configuration defined in `gradle.properties`.
-
-
-### How to Build the APK
-
-Once the dependencies are set up, you can build the APK using the following command:
+Prefer building it yourself in Termux? One command each:
 
 ```bash
-./gradlew assembleDebug
+pkg install git openjdk-17 aapt2
+git clone https://github.com/brunodavi/keyboard-html.git && cd keyboard-html && ./gradlew assembleDebug
 ```
 
-The APK file will be generated at:
+The SDK downloads automatically on first run. The APK appears at `app/build/outputs/apk/debug/app-debug.apk`; details in [`docs/build.md`](docs/build.md).
 
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
+## Status
 
-To install it on your device:
+Work in progress — the WebView keyboard shell, package import, and default built-in layouts are landing incrementally. Track what's next in the [issues](https://github.com/brunodavi/keyboard-html/issues) and what shipped in the [CHANGELOG](CHANGELOG.md).
 
-1. Copy the APK to your Downloads folder:
+## Documentation (for contributors)
 
-   ```bash
-   cp app/build/outputs/apk/debug/app-debug.apk /sdcard/Download/
-   ```
-2. Open a file manager on your phone.
-3. Navigate to the **Download** folder.
-4. Tap on the APK file to install it (make sure unknown sources are allowed).
+Feature details, architecture decisions, and house rules live under [`docs/`](docs/):
 
-
-## Configuration via `gradle.properties`
-
-The core project settings and Android dependencies are configured in the `gradle.properties` file:
-
-```properties
-# App Information
-APP_NAME=Keyboard HTML
-APP_PACKAGE=com.keyboardhtml
-APP_VERSION=1.0
-APP_VERSION_CODE=1
-APP_MIN_SDK_VERSION=21
-APP_TARGET_SDK_VERSION=33
-
-# Android Dependencies
-ANDROID_COMPILE_SDK_VERSION=33
-ANDROID_BUILD_TOOLS_VERSION=33.0.2
-ANDROID_GRADLE_PLUGIN_VERSION=8.3.0
-
-# aapt2 binary path for Termux
-android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2
-# org.gradle.jvmargs=-Xmx512m -XX:MaxPermSize=256m
-```
-
-These variables are injected into your Gradle configuration automatically, making it easy to customize without touching the build files directly. `APP_NAME` sets the app display name (launcher label) and `APP_PACKAGE` defines both `namespace` and `applicationId`.
-
-
-## Java Configuration
-
-Java version compatibility is set in `app/build.gradle`:
-
-```groovy
-compileOptions {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
-}
-```
-
-This ensures compatibility with modern libraries and uses the OpenJDK 17 installed via Termux.
-
-
-## Tip: Limit Gradle Memory Usage
-
-Running Gradle on mobile devices can be memory-intensive and may cause freezes or crashes. To reduce this risk, you can limit memory usage by adding the following to your `gradle.properties`:
-
-```properties
-org.gradle.jvmargs=-Xmx512m -XX:MaxPermSize=256m
-```
-
-Adjust the values according to your device’s available RAM (e.g., `-Xmx256m` for low-memory devices).
-
-
-## Contributing
-
-Feel free to fork, customize, and contribute to this template. It’s designed for developers who want to build Android apps directly on their phones without heavy IDEs.
+- [`docs/build.md`](docs/build.md) — build environment, configuration quirks, Termux specifics
+- [`docs/architecture.md`](docs/architecture.md) — design decisions and app requirements
+- [`docs/workflow.md`](docs/workflow.md) — TDD, git conventions, release rules
+- [`docs/deployment.md`](docs/deployment.md) — tag-triggered release pipeline
