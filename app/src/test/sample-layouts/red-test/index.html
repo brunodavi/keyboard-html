@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+  html, body { margin:0; padding:0; background:#8b1e1e; font-family:sans-serif;
+    -webkit-user-select:none; user-select:none; touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent; }
+  #kb { display:flex; flex-direction:column; gap:5px; padding:5px; }
+  .row { display:flex; gap:4px; }
+  button { flex:1; max-width:44px; height:46px; font-size:17px; color:#ffe9e9;
+    background:#a52a2a; border:0; border-radius:7px; }
+  button.act { max-width:64px; background:#7a1f1f; font-size:13px; }
+  button.wide { max-width:60%; background:#7a1f1f; }
+  button:active { background:#ffb3b3; color:#401010; }
+</style>
+</head>
+<body>
+<div id="kb">
+  <div class="row">
+    <button data-key="R">R</button>
+    <button data-key="E">E</button>
+    <button data-key="D">D</button>
+    <button class="act" data-key="backspace">BKSP</button>
+  </div>
+  <div class="row">
+    <button class="wide" data-key="space">SPACE</button>
+    <button class="act" data-key="enter">ENTER</button>
+  </div>
+</div>
+<script>
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (target && target.getAttribute && target.getAttribute('data-key')) {
+      event.preventDefault();
+      KeyboardBridge.onKey(target.getAttribute('data-key'));
+    }
+  });
+</script>
+</body>
+</html>

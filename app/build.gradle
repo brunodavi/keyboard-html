@@ -29,3 +29,18 @@ android {
 dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
+
+// Sample keyboard packages (zip) dropped next to the debug APK so on-device
+// smoke testing needs no manual zip building. Sources in src/test/sample-layouts.
+def sampleLayout(String name) {
+    tasks.register("sampleLayout${name.capitalize()}", Zip) {
+        from "src/test/sample-layouts/${name}"
+        archiveFileName = "${name}.zip"
+        destinationDirectory = layout.buildDirectory.dir("outputs/apk/debug")
+    }
+}
+def sampleLayoutTasks = ['red-test', 'mint-test'].collect { sampleLayout(it) }
+
+tasks.matching { it.name == 'assembleDebug' }.configureEach {
+    dependsOn sampleLayoutTasks
+}

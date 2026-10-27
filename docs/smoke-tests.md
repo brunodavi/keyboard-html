@@ -26,10 +26,11 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 
 ## S3 — zip import
 
-1. Prepare a test layout zip (see below), then tap **Import keyboard (.zip)**.
-2. Picker opens, select the zip.
-3. Toast: "Imported and selected `<name>`".
-4. The keyboard (on any field) now renders the imported layout.
+1. The build already drops ready-made samples beside the APK in `app/build/outputs/apk/debug/`: `red-test.zip` ("Red Test", letters R/E/D) and `mint-test.zip` ("Mint Numbers", digits 0-9).
+2. Tap **Import keyboard (.zip)**, pick `red-test.zip` in the picker.
+3. Toast: "Imported and selected `Red Test`" (mentioning the manifest name).
+4. The keyboard (on any field) now renders the red layout.
+5. Import `mint-test.zip` the same way; the keyboard switches to it.
 
 ## S4 — choose among installed layouts
 
@@ -41,7 +42,7 @@ Install: copy to `/sdcard/Download`, open from a file manager (allow unknown sou
 
 ### Building a test layout zip
 
-Any zip with `index.html` at root works. Optional `manifest.json` gives the keyboard a display name (otherwise the zip file name is shown):
+Sample zips ship with the build (`red-test.zip`, `mint-test.zip` next to the APK). To roll your own: any zip with `index.html` at root works. Optional `manifest.json` gives the keyboard a display name (otherwise the zip file name is shown):
 
 ```text
 my-keeb.zip
