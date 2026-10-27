@@ -137,11 +137,12 @@ public class DefaultKeyboardAssetTest {
     }
 
     @Test
-    public void shiftAndBackspaceStayCompactOnTheLettersRow() throws IOException {
+    public void shiftAndBackspaceMatchTheLetterWidthOnTheLettersRow() throws IOException {
         String html = asset();
+        assertTrue("letters row fn keys must use the compact (letter-width) flex",
+                html.contains("button.compact { flex: 1; }"));
         assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-ui=\"shift\".*"));
         assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-key=\"backspace\".*"));
-        assertTrue(html.contains("button.compact"));
     }
 
     @Test
