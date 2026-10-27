@@ -30,8 +30,39 @@ jobs:
       - name: Tests
         run: ./gradlew test
 
+      - name: Verify release version consistency
+        if: github.ref_type == 'tag'
+        run: |
+          set -euo pipefail
+          APP_VERSION="$(grep -E '^APP_VERSION=' gradle.properties | cut -d= -f2)"
+          TAG="${{ github.ref_name }}"
+          if [ "$TAG" != "v$APP_VERSION" ]; then
+            echo "::error::Tag $TAG does not match APP_VERSION=$APP_VERSION in gradle.properties"
+            exit 1
+          fi
+          if ! grep -qE "^## \[$APP_VERSION\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## [$APP_VERSION]' section"
+            exit 1
+          fi
+          echo "Version consistency OK: $TAG == v$APP_VERSION (gradle.properties, CHANGELOG.md)"
+
       - name: Build APKs
         run: ./gradlew assembleRelease assembleDebug
+
+      - name: Verify APK version matches project version
+        run: |
+          set -euo pipefail
+          APP_VERSION="$(grep -E '^APP_VERSION=' gradle.properties | cut -d= -f2)"
+          AAPT="$(ls build/android-sdk-root/build-tools/*/aapt2 | head -n1)"
+          echo "Using aapt2: $AAPT"
+          for APK in app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/debug/app-debug.apk; do
+            VERSION_NAME="$($AAPT dump badging "$APK" | grep -oE "versionName='[^']*'" | head -n1 | cut -d"'" -f2)"
+            if [ "$VERSION_NAME" != "$APP_VERSION" ]; then
+              echo "::error::$APK has versionName=$VERSION_NAME but project APP_VERSION=$APP_VERSION"
+              exit 1
+            fi
+            echo "$APK versionName=$VERSION_NAME OK"
+          done
 
       - name: Save Android SDK cache
         uses: actions/cache/save@v3

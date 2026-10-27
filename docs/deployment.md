@@ -17,7 +17,8 @@ Standardized so anyone (or any agent) can be told "ship it" and follow the same 
 ## What the pipeline enforces
 
 - `on: push: tags: ['v*.*.*']` (+ `workflow_dispatch` for manual runs).
-- Tests run again before packaging.
+- Tests run again before packaging (including `VersionConsistencyTest`: APP_VERSION is semver X.Y.Z, APP_VERSION_CODE positive, CHANGELOG tracks the project version).
+- **Version guards before publishing**: the tag must equal `v$(APP_VERSION)` from `gradle.properties`, `CHANGELOG.md` must have the matching `## [X.Y.Z]` section, and the built APKs' `versionName` must equal `APP_VERSION` (checked via `aapt2 dump badging`). Any mismatch fails the release.
 - SDK and Gradle caches (keyed by `gradle.properties` hash / wrapper) so repeat runs are fast.
 - APKs are renamed with version + platform, hashed (`sha256sum`), and published against the Changelog section:
 
