@@ -4,7 +4,11 @@
     <string name="action_enable">Enable keyboard</string>
     <string name="action_select">Select keyboard</string>
     <string name="action_import">Import keyboard (.zip)</string>
-    <string name="imported_toast">Imported layout “%1$s”</string>
+    <string name="action_layout">Choose layout</string>
+    <string name="choose_layout_title">Installed layouts</string>
+    <string name="no_layouts_toast">No imported layouts yet — import a .zip first.</string>
+    <string name="imported_toast">Imported and selected “%1$s”</string>
+    <string name="selected_toast">Selected layout “%1$s”</string>
     <string name="import_failed_toast">Import failed: %1$s</string>
     <string name="status_checking">Checking keyboard status…</string>
     <string name="status_disabled">Status: not enabled — tap “Enable keyboard”.</string>

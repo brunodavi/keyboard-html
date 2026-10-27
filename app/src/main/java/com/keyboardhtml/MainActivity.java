@@ -42,6 +42,8 @@ public class MainActivity extends Activity {
                 .setOnClickListener(v -> inputMethodManager().showInputMethodPicker());
         findViewById(R.id.btn_import)
                 .setOnClickListener(v -> launchZipImport());
+        findViewById(R.id.btn_layout)
+                .setOnClickListener(v -> chooseLayout());
     }
 
     @Override
@@ -94,9 +96,10 @@ public class MainActivity extends Activity {
         }
         try {
             String imported = importLayout(data.getData());
+            layoutsRepository().currentLayoutId(imported);
             refreshStatus();
             Toast.makeText(this, getString(R.string.imported_toast, imported), Toast.LENGTH_LONG).show();
-        } catch (IOException | ZipLayoutExtractor.InvalidLayout e) {
+        } catch (IOException | ZipLayoutExtractor.InvalidLayout | IllegalArgumentException e) {
             Toast.makeText(this,
                     getString(R.string.import_failed_toast, e.getMessage()), Toast.LENGTH_LONG).show();
         }
@@ -107,6 +110,36 @@ public class MainActivity extends Activity {
         File cache = new File(getCacheDir(), "import.zip");
         copyTo(source, cache);
         return ZipLayoutExtractor.extract(cache, layoutsRoot()).layoutId();
+    }
+
+    private void chooseLayout() {
+        LayoutRepository repository = layoutsRepository();
+        java.util.List<String> layouts = repository.listLayouts();
+        if (layouts.isEmpty()) {
+            Toast.makeText(this, R.string.no_layouts_toast, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String[] options = layouts.toArray(new String[0]);
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.choose_layout_title)
+                .setItems(options, (dialog, which) -> {
+                    try {
+                        repository.currentLayoutId(options[which]);
+                        refreshStatus();
+                        Toast.makeText(this,
+                                getString(R.string.selected_toast, options[which]),
+                                Toast.LENGTH_SHORT).show();
+                    } catch (IllegalArgumentException e) {
+                        Toast.makeText(this,
+                                getString(R.string.import_failed_toast, e.getMessage()),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+
+    private LayoutRepository layoutsRepository() {
+        return new LayoutRepository(layoutsRoot());
     }
 
     private File layoutsRoot() {

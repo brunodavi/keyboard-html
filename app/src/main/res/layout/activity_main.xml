@@ -51,8 +51,15 @@
             android:id="@+id/btn_import"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="6dp"
             android:text="@string/action_import" />
+
+        <Button
+            android:id="@+id/btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:text="@string/action_layout" />
 
         <TextView
             android:layout_width="match_parent"
