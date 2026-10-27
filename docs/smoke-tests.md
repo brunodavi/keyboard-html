@@ -22,7 +22,8 @@ no number row, no extra toolbars:
 4. Tap **Select keyboard** → picker lists "Keyboard HTML" → pick it.
 5. Status shows "active".
 6. Tap the test field → the dark keyboard appears (letters sheet).
-7. Type a word; tap ⇧ once → next letter appears uppercase and auto-releases.
+7. Type a word; tap ⇧ once → next letter appears uppercase and auto-releases;
+   double-tap ⇧ → caps lock (blue underline stays on) until tapped again.
 8. Tap **!#1** → symbols 1/2: type `1 ! @ €` ...; tap **2/2 ↔ 1/2** → the second symbol sheet swaps; tap **ABC** → back to letters.
 9. ⌫ deletes, ␣ inserts space, ◦↵ submits the field.
 

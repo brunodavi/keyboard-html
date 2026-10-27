@@ -135,4 +135,29 @@ public class DefaultKeyboardAssetTest {
                     action || key.length() <= 32);
         }
     }
+
+    @Test
+    public void shiftAndBackspaceStayCompactOnTheLettersRow() throws IOException {
+        String html = asset();
+        assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-ui=\"shift\".*"));
+        assertTrue(html.matches("(?s).*<button class=\"fn compact\" data-key=\"backspace\".*"));
+        assertTrue(html.contains("button.compact"));
+    }
+
+    @Test
+    public void shiftDoubleTapSimulatesCapsLock() throws IOException {
+        assertTrue("caps lock state marker missing",
+                asset().contains("shift-caps"));
+    }
+
+    @Test
+    public void pageToggleLabelReflectsTheCurrentPage() throws IOException {
+        String html = asset();
+        assertTrue("symbols-1 shows 1/2",
+                html.matches("(?s).*data-sheet=\"symbols-1\"(?:.(?!data-sheet))+?"
+                        + "data-ui=\"page-toggle\">1/2.*"));
+        assertTrue("symbols-2 shows 2/2",
+                html.matches("(?s).*data-sheet=\"symbols-2\"(?:.(?!data-sheet))+?"
+                        + "data-ui=\"page-toggle\">2/2.*"));
+    }
 }
