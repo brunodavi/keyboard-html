@@ -19,7 +19,11 @@ final class ImeTextOps implements TextOps {
 
     @Override
     public void deleteBackward() {
-        connection.deleteSurroundingText(1, 0);
+        if (DeleteResolver.resolve(connection.getSelectedText(0)) == DeleteResolver.Outcome.CLEAR_SELECTION) {
+            connection.commitText("", 1);
+        } else {
+            connection.deleteSurroundingText(1, 0);
+        }
     }
 
     @Override
