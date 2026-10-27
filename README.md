@@ -1,6 +1,6 @@
-# Android Template for Termux
+# keyboard-html
 
-This GitHub template simplifies the process of setting up an Android development environment directly inside **Termux**. It automatically installs the Android SDK when you run `./gradlew`, allowing you to build and manage Android apps on your device with ease.
+An Android app template for building apps whose UI is HTML rendered in a WebView (on-screen keyboard app). It simplifies the process of setting up an Android development environment directly inside **Termux**. It automatically installs the Android SDK when you run `./gradlew`, allowing you to build and manage Android apps on your device with ease.
 
 
 ## Prerequisites
@@ -59,7 +59,8 @@ The core project settings and Android dependencies are configured in the `gradle
 
 ```properties
 # App Information
-APP_PACKAGE=com.example.myapp
+APP_NAME=Keyboard HTML
+APP_PACKAGE=com.keyboardhtml
 APP_VERSION=1.0
 APP_VERSION_CODE=1
 APP_MIN_SDK_VERSION=21
@@ -75,7 +76,7 @@ android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2
 # org.gradle.jvmargs=-Xmx512m -XX:MaxPermSize=256m
 ```
 
-These variables are injected into your Gradle configuration automatically, making it easy to customize without touching the build files directly.
+These variables are injected into your Gradle configuration automatically, making it easy to customize without touching the build files directly. `APP_NAME` sets the app display name (launcher label) and `APP_PACKAGE` defines both `namespace` and `applicationId`.
 
 
 ## Java Configuration

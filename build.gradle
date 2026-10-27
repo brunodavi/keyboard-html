@@ -7,9 +7,10 @@ def setExtProps(List<String> props) {
     }
 }
 
-// Chamada da função
+// Function call
 setExtProps([
     'APP_PACKAGE',
+    'APP_NAME',
     'APP_VERSION',
     'APP_VERSION_CODE',
     'APP_MIN_SDK_VERSION',

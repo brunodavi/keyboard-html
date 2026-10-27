@@ -1,4 +1,4 @@
-package com.example.myapp;
+package com.keyboardhtml;
 
 import android.app.Activity;
 import android.os.Bundle;

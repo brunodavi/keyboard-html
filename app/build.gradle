@@ -10,6 +10,7 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [APP_NAME: APP_NAME.toString()]
         applicationId APP_PACKAGE
         versionName APP_VERSION
         versionCode Integer.parseInt(APP_VERSION_CODE)
@@ -22,4 +23,8 @@ android {
             minifyEnabled false
         }
     }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
 }

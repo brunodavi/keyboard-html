@@ -11,7 +11,8 @@ Android app template designed for building **inside Termux** (and also works on 
 ## Configuration quirks
 
 - **No hardcoded values in build files**: app ID, versions, SDK levels are read from `gradle.properties` (`APP_PACKAGE`, `APP_VERSION`, `APP_VERSION_CODE`, `APP_MIN_SDK_VERSION`, `APP_TARGET_SDK_VERSION`, `ANDROID_COMPILE_SDK_VERSION`, `ANDROID_BUILD_TOOLS_VERSION`, `ANDROID_GRADLE_PLUGIN_VERSION`). Root `build.gradle` throws if any is missing — adding app config means editing `gradle.properties`, not `app/build.gradle`.
-- `APP_PACKAGE` must match the Java package under `app/src/main/java/` (`com.example.myapp` currently) — it's used as both `namespace` and `applicationId`.
+- `APP_PACKAGE` must match the Java package under `app/src/main/java/` (`com.keyboardhtml` currently) — it's used as both `namespace` and `applicationId`.
+- `APP_NAME` sets the app display name (launcher label) and is injected as a manifest placeholder — no hardcoded label in the manifest.
 - Java 17 source/target compatibility is fixed in `app/build.gradle`.
 - `local.properties` is generated/gitignored-adjacent; don't commit or hand-edit `sdk.dir`.
 - License acceptance for the auto-installed SDK lives in `app/licenses/android-sdk-license`; `LICENSES_DIR` env var can override the licenses directory.
