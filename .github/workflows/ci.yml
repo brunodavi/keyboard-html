@@ -9,21 +9,21 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Set up Gradle (cache)
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v6
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/dev' }}
 
       - name: Cache Android SDK
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: build/android-sdk-root
           key: android-sdk-${{ hashFiles('gradle.properties') }}
