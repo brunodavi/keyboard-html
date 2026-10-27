@@ -30,10 +30,9 @@ This template is the base for an experimental on-screen keyboard app:
 
 - **TDD**: write the failing test first, then implement, then refactor. Every new feature or fix starts with a test. Run tests with `./gradlew test` (single test: `./gradlew :app:testDebugUnitTest --tests '<FullyQualifiedClassName>'`).
 
-- **Single-branch workflow + Conventional Commits**: the only permanent branch is `dev` (the default branch on GitHub). There are **no `main`, `develop`, `release/` or `hotfix/` branches**. Each feature/fix gets a short-lived branch off `dev` (`feat/...`, `fix/...`, `docs/...`, ...), it is merged back into `dev` and the branch is deleted afterwards. Commit messages follow Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`, ...). Production ("prd") is marked by **tags, not branches** — stable versions are marked by creating and **pushing a git tag**:
+- **Single-branch workflow + Conventional Commits**: **everything is committed directly on `dev`** — the only branch there is (default branch on GitHub). Never create feature/work branches (`feat/...`, `fix/...`, `main`, `develop`, `release/`, `hotfix/`, ...) at any time. Commit messages follow Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`, ...). Production ("prd") is marked by **tags, not branches**: whenever `dev` reaches a stable state, mark the release by creating and **pushing a git tag** (tag version must match `APP_VERSION` in `gradle.properties`):
 
   ```bash
-  git checkout dev && git merge --no-ff feat/my-feature
   git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin dev --tags
   ```
 
